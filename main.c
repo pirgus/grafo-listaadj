@@ -10,12 +10,12 @@ int main(){
     grafo = graphInit(vertices);
 
     while(true){
-        printf("grafo atual:: ");
-        graphImprime(grafo);
-
         printf("adicionar aresta entre os vertices :: ");
         scanf("%d %d", &v1, &v2);
         graphInserirAresta(grafo, v1, v2);
+
+        printf("grafo atual:: ");
+        graphImprime(grafo);
 
         //printf("excluindo aresta criada...\n");
         //graphExcluirAresta(grafo, v1, v2);

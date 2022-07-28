@@ -6,11 +6,10 @@ Graph graphInit(int V){
     Graph G = (Graph) malloc(sizeof *G);
     G->V = V;
     G->A = 0;
-    G->adj = (list*) malloc(sizeof(list) * V);
-    for(int i = 0; i < V; i++){
+    //G->adj = (node*) malloc(sizeof(node) * V);
+    for(int i = 0; i < V; i++)
         initList(&G->adj[i]);
-        printf("inicializou a lista\n");
-    }
+
     return G;
 }
 
