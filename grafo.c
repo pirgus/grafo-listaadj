@@ -6,11 +6,11 @@ Graph graphInit(int V){
     Graph G = (Graph) malloc(sizeof *G);
     G->V = V;
     G->A = 0;
-    G->adj = (link*) malloc(sizeof(link) * V);
+    G->adj = (list*) malloc(sizeof(list) * V);
     for(int i = 0; i < V; i++){
-        G->adj[i] = NULL;
+        initList(&G->adj[i]);
+        printf("inicializou a lista\n");
     }
-
     return G;
 }
 
@@ -23,35 +23,57 @@ Graph graphInit(int V){
 //}
 
 void graphInserirAresta(Graph G, vertice v, vertice w){
-    if(v <= G->V){
+    if(v >= G->V){
         printf("Erro: indicou um vertice maior que o tamanho do grafo\n");
         return;
     }
-    else if(w <= G->V){
+    else if(w >= G->V){
         printf("Erro: indicou um vertice maior que o tamanho do grafo\n");
         return;
     }
-    for(link a = G->adj[v]; a != NULL; a = a->next){
-        printf("percorrendo o grafo\n");
-        if(a->w == w)
-            printf("encontrou a->w == w\n");
+    for(node *a = G->adj[v].first; a != NULL; a = a->next){
+        //printf("percorrendo o grafo\n");
+        if(a->data == w){
+            //printf("encontrou a->w == w\n");
             return;
+        }
     }
-    printf("alocando novo nodo\n");
-    G->adj[v] = newNode(w, G->adj[v]);
+    //printf("alocando novo nodo\n");
+    //G->adj[v] = newNode(w, G->adj[v]);
+    insertRight(w, &G->adj[v]);
+    for(node *a = G->adj[w].first; a != NULL; a = a->next){
+        //printf("percorrendo o grafo\n");
+        if(a->data == v){
+            //printf("encontrou a->w == w\n");
+            return;
+        }
+    }
+    insertRight(v, &G->adj[w]);
     G->A++;
 }
 
-void graphExcluitAresta(Graph G, vertice v, vertice w){
+void graphExcluirAresta(Graph G, vertice v, vertice w){
+    if(v >= G->V){
+        printf("Erro: indicou um vertice maior que o tamanho do grafo\n");
+        return;
+    }
+    else if(w >= G->V){
+        printf("Erro: indicou um vertice maior que o tamanho do grafo\n");
+        return; 
+    }
 
+    removeSpec(w, &G->adj[v]);
+    removeSpec(v, &G->adj[w]);
+
+    G->A--;
 }
 
 void reachR(Graph G, vertice v, int *visited){
     visited = (int*) malloc(sizeof(int) * G->V);
     visited[v] = 1;
-    for(link a = G->adj[v]; a != NULL; a = a->next){
-        if(visited[a->w] == 0){
-            free(visited), reachR(G, a->w, visited);
+    for(node *a = G->adj[v].first; a != NULL; a = a->next){
+        if(visited[a->data] == 0){
+            free(visited), reachR(G, a->data, visited);
         }
     }
 }
@@ -88,8 +110,8 @@ void buscaProfundidade(Graph G){
 
 void buscaRecur(Graph G, vertice v, int *pre){
     pre[v] = cnt++;
-    for(link a = G->adj[v]; a != NULL; a = a->next){
-        int w = a->w;
+    for(node *a = G->adj[v].first; a != NULL; a = a->next){
+        int w = a->data;
         if(pre[w] == -1){
             buscaRecur(G, w, pre);
         }
@@ -110,10 +132,10 @@ void buscaLargura(Graph G, vertice s){
 
     while(queue.size != 0){
         vertice v = removeLeft(&queue);
-        for(link a = G->adj[v]; a != NULL; a = a->next){
-            if(num[a->w] == -1){
-                num[a->w] = cnt++;
-                insertRight(a->w, &queue);
+        for(node *a = G->adj[v].first; a != NULL; a = a->next){
+            if(num[a->data] == -1){
+                num[a->data] = cnt++;
+                insertRight(a->data, &queue);
             }
         }
     }
@@ -126,9 +148,8 @@ void graphImprime(Graph G){
     printf("G->A = %d\n", G->A);
     for(int i = 0; i < G->V; i++){
         printf("V%d:: ", i);
-        link a = G->adj[i];
-        for(link a = G->adj[i]; a != NULL; a = a->next){
-            printf("%d ", a->w);
+        for(node *a = G->adj[i].first; a != NULL; a = a->next){
+            printf("%d ", a->data);
         }
         printf("\n");
     }
