@@ -14,7 +14,7 @@ struct graph{
 
 typedef struct  graph *Graph;
 
-void graphInit(Graph G, int V);
+Graph graphInit(int V);
 
 //void graphInserirVertice(Graph G, vertice v);
 

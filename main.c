@@ -8,16 +8,19 @@ int main(){
     scanf("%d", &vertices);
     printf("\n");
 
+    grafo = graphInit(vertices);
     printf("grafo atual:: ");
     graphImprime(grafo);
 
-    graphInit(grafo, vertices);
     printf("adicionar aresta entre os vertices :: ");
     scanf("%d %d", &v1, &v2);
     graphInserirAresta(grafo, v1, v2);
 
+
+
     printf("grafo atual:: ");
     graphImprime(grafo);
+
 
     return 0;
 

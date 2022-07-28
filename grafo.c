@@ -2,14 +2,16 @@
 
 static int cnt;
 
-void graphInit(Graph G, int V){
-    G = (Graph) malloc(sizeof *G);
+Graph graphInit(int V){
+    Graph G = (Graph) malloc(sizeof *G);
     G->V = V;
     G->A = 0;
-    G->adj = (struct nodeGraph**) malloc(sizeof(struct nodeGraph*) * V);
+    G->adj = (link*) malloc(sizeof(link) * V);
     for(int i = 0; i < V; i++){
         G->adj[i] = NULL;
     }
+
+    return G;
 }
 
 //void graphInserirVertice(Graph G, vertice v){
@@ -21,6 +23,14 @@ void graphInit(Graph G, int V){
 //}
 
 void graphInserirAresta(Graph G, vertice v, vertice w){
+    if(v <= G->V){
+        printf("Erro: indicou um vertice maior que o tamanho do grafo\n");
+        return;
+    }
+    else if(w <= G->V){
+        printf("Erro: indicou um vertice maior que o tamanho do grafo\n");
+        return;
+    }
     for(link a = G->adj[v]; a != NULL; a = a->next){
         printf("percorrendo o grafo\n");
         if(a->w == w)
@@ -112,6 +122,8 @@ void buscaLargura(Graph G, vertice s){
 }
 
 void graphImprime(Graph G){
+    printf("G->V = %d\n", G->V);
+    printf("G->A = %d\n", G->A);
     for(int i = 0; i < G->V; i++){
         printf("V%d:: ", i);
         link a = G->adj[i];
