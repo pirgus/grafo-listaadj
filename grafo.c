@@ -6,7 +6,7 @@ Graph graphInit(int V){
     Graph G = (Graph) malloc(sizeof *G);
     G->V = V;
     G->A = 0;
-    //G->adj = (node*) malloc(sizeof(node) * V);
+    G->adj = (list*) malloc(sizeof(list) * V);
     for(int i = 0; i < V; i++)
         initList(&G->adj[i]);
 
@@ -31,14 +31,13 @@ void graphInserirAresta(Graph G, vertice v, vertice w){
         return;
     }
     for(node *a = G->adj[v].first; a != NULL; a = a->next){
-        //printf("percorrendo o grafo\n");
+        printf("percorrendo o grafo\n");
         if(a->data == w){
-            //printf("encontrou a->w == w\n");
+            printf("encontrou a->w == w\n");
             return;
         }
     }
-    //printf("alocando novo nodo\n");
-    //G->adj[v] = newNode(w, G->adj[v]);
+    printf("alocando novo nodo\n");
     insertRight(w, &G->adj[v]);
     for(node *a = G->adj[w].first; a != NULL; a = a->next){
         //printf("percorrendo o grafo\n");
@@ -147,9 +146,10 @@ void graphImprime(Graph G){
     printf("G->A = %d\n", G->A);
     for(int i = 0; i < G->V; i++){
         printf("V%d:: ", i);
-        for(node *a = G->adj[i].first; a != NULL; a = a->next){
-            printf("%d ", a->data);
-        }
+        printList(G->adj[i]);
+        //for(node *a = G->adj[i].first; a != NULL; a = a->next){
+        //    printf("%d ", a->data);
+        //}
         printf("\n");
     }
 }

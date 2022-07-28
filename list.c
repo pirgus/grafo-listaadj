@@ -7,7 +7,6 @@ void initList(list *L){
   L->first = NULL;
   L->last = NULL;
   L->size = 0;
-  printf("inicializou a lista.\n");
 }
 
 void deleteList(list *L){
