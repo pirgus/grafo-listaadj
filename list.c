@@ -88,10 +88,12 @@ int removeLeft(list *L){
   return vertice;
 }
 
-void removeRight(list *L){
+int removeRight(list *L){
   node *aux = L->last;
+  int vertice;
 
   if(L->first == L->last){ // lista com um unico elemento
+    vertice = aux->data;
     free(aux);
     L->first = L->last = NULL;
   }
@@ -100,10 +102,12 @@ void removeRight(list *L){
     while(L->last->next != aux){  // enquanto o elemento seguinte for diferente do elemento que será excluido
       L->last = L->last->next; // o ultimo elemento vai "seguindo para frente"
     }
+    vertice = aux->data;
     free(aux);
     L->last->next = NULL;
   }
   L->size--; // diminuiu o tamanho da lista
+  return vertice;
 }
 
 node* searchList(tdata x, list L){
@@ -149,10 +153,10 @@ void insertPos(tdata x, unsigned pos, list *L){
   }
 }
 
-void removePos(unsigned pos, list *L){
+int removePos(unsigned pos, list *L){
   // verifica se a posição é possível
   if(pos > L->size - 1){
-    return;
+    return 1;
   }
   else if(pos == 0){ // remoção pela esquerda
     return removeLeft(L);

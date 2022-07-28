@@ -3,8 +3,8 @@
 
 #define vertice int
 
-typedef struct node *link; // link = ponteiro para node
-struct node{ // nós que corresponde a um arco e contém um
+typedef struct nodeGraph *link; // link = ponteiro para node
+struct nodeGraph{ // nós que corresponde a um arco e contém um
     vertice w; // vizinho w de v e o endereço do nó seguinte
     link next;
 };

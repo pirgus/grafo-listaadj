@@ -29,12 +29,12 @@ bool emptyList(list L);
 
 int removeLeft(list *L);
 
-void removeRight(list *L);
+int removeRight(list *L);
 
 node* searchList(tdata x, list L);
 
 void insertPos(tdata x, unsigned pos, list *L);
 
-void removePos(unsigned pos, list *L);
+int removePos(unsigned pos, list *L);
 
 void removeSpec(tdata x, list *L);

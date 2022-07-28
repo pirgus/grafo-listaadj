@@ -1,7 +1,7 @@
 #include "node.h"
 
 link newNode(vertice w, link next){
-    link a = malloc(sizeof(struct node));
+    link a = (struct nodeGraph*) malloc(sizeof(struct nodeGraph));
     a->w = w;
     a->next = next;
     return a;

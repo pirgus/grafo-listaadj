@@ -3,10 +3,10 @@
 static int cnt;
 
 void graphInit(Graph G, int V){
-    G = malloc(sizeof *G);
+    G = (Graph) malloc(sizeof *G);
     G->V = V;
     G->A = 0;
-    G->adj = malloc(sizeof(link) * V);
+    G->adj = (struct nodeGraph**) malloc(sizeof(struct nodeGraph*) * V);
     for(int i = 0; i < V; i++){
         G->adj[i] = NULL;
     }
@@ -22,9 +22,12 @@ void graphInit(Graph G, int V){
 
 void graphInserirAresta(Graph G, vertice v, vertice w){
     for(link a = G->adj[v]; a != NULL; a = a->next){
+        printf("percorrendo o grafo\n");
         if(a->w == w)
+            printf("encontrou a->w == w\n");
             return;
     }
+    printf("alocando novo nodo\n");
     G->adj[v] = newNode(w, G->adj[v]);
     G->A++;
 }
