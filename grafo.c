@@ -31,13 +31,13 @@ void graphInserirAresta(Graph G, vertice v, vertice w){
         return;
     }
     for(node *a = G->adj[v].first; a != NULL; a = a->next){
-        printf("percorrendo o grafo\n");
+        //printf("percorrendo o grafo\n");
         if(a->data == w){
-            printf("encontrou a->w == w\n");
+            //printf("encontrou a->w == w\n");
             return;
         }
     }
-    printf("alocando novo nodo\n");
+    //printf("alocando novo nodo\n");
     insertRight(w, &G->adj[v]);
     for(node *a = G->adj[w].first; a != NULL; a = a->next){
         //printf("percorrendo o grafo\n");
@@ -126,20 +126,34 @@ static void buscaRecur(Graph G, vertice v, int *pre){
 }
 
 void buscaLargura(Graph G, vertice s){
+    if(G->A < 1){
+        printf("Arestas insuficientes.\n");
+        return;
+    }
+
     static int *num;
-    list queue;
-    num = (int*) malloc(sizeof(int) * G->V);
+    list *queue;
     int cnt = 0;
+
+    num = (int*) malloc(sizeof(int) * G->V);
+
     for(int i = 0; i < G->V; i++){
         num[i] = -1;
     }
-    initList(&queue);
-    num[s] = cnt++;
-    insertRight(s, &queue);
+    printf("inicializou o vetor num[] com -1s\n");
 
-    while(!emptyList(queue)){
+    initList(queue);
+    printf("inicializou a lista auxiliar\n");
+
+    num[s] = cnt++;
+    printf("atribuiu c++ a num[s])\n");
+
+    insertRight(s, queue);
+    printf("inseriu s na lista\n");
+
+    while(!emptyList(*queue)){
         // imprime a lista 
-        printList(queue);
+        printList(*queue);
 
         // imprime o vetor num[]
         printf("num[] = ");
@@ -148,16 +162,16 @@ void buscaLargura(Graph G, vertice s){
         }
         printf("\n");
 
-        vertice v = removeLeft(&queue);
+        vertice v = removeLeft(queue);
         for(node *a = G->adj[v].first; a != NULL; a = a->next){
             if(num[a->data] == -1){
                 num[a->data] = cnt++;
-                insertRight(a->data, &queue);
+                insertRight(a->data, queue);
             }
         }
     }
     free(num);
-    deleteList(&queue);
+    deleteList(queue);
 }
 
 void graphImprime(Graph G){

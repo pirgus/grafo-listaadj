@@ -58,8 +58,10 @@ void insertRight(tdata x, list *L){
   else{
     aux->data = x;
     aux->next = NULL; // pois é o ultimo elemento da lista
-    if(L->last == NULL) // a lista está vazia
+    if(L->last == NULL){ // a lista está vazia
+      printf("chegou na lista vazia\n");
       L->first = L->last = aux;
+    }
     else{
       L->last->next = aux;
       L->last = aux;
