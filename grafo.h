@@ -30,7 +30,7 @@ bool graphReach(Graph G, vertice s, vertice t);
 
 void buscaProfundidade(Graph G);
 
-void buscaRecur(Graph G, vertice v, int *pre);
+static void buscaRecur(Graph G, vertice v, int *pre);
 
 void buscaLargura(Graph G, vertice s);
 

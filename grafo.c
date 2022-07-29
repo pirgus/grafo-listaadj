@@ -94,6 +94,11 @@ bool graphReach(Graph G, vertice s, vertice t){
 }
 
 void buscaProfundidade(Graph G){
+    if(G->A < 1){
+        printf("Arestas insuficientes.\n");
+        return;
+    }
+    
     cnt = 0;
     int *pre;
     pre = (int*) malloc(sizeof(int) * G->V);
@@ -110,7 +115,7 @@ void buscaProfundidade(Graph G){
 
 }
 
-void buscaRecur(Graph G, vertice v, int *pre){
+static void buscaRecur(Graph G, vertice v, int *pre){
     pre[v] = cnt++;
     for(node *a = G->adj[v].first; a != NULL; a = a->next){
         int w = a->data;
@@ -121,7 +126,7 @@ void buscaRecur(Graph G, vertice v, int *pre){
 }
 
 void buscaLargura(Graph G, vertice s){
-    int *num;
+    static int *num;
     list queue;
     num = (int*) malloc(sizeof(int) * G->V);
     int cnt = 0;
@@ -132,7 +137,17 @@ void buscaLargura(Graph G, vertice s){
     num[s] = cnt++;
     insertRight(s, &queue);
 
-    while(queue.size != 0){
+    while(!emptyList(queue)){
+        // imprime a lista 
+        printList(queue);
+
+        // imprime o vetor num[]
+        printf("num[] = ");
+        for(int i = 0; i < G->V; i++){
+            printf("%d ", num[i]);
+        }
+        printf("\n");
+
         vertice v = removeLeft(&queue);
         for(node *a = G->adj[v].first; a != NULL; a = a->next){
             if(num[a->data] == -1){
@@ -151,9 +166,6 @@ void graphImprime(Graph G){
     for(int i = 0; i < G->V; i++){
         printf("V%d:: ", i);
         printList(G->adj[i]);
-        //for(node *a = G->adj[i].first; a != NULL; a = a->next){
-        //    printf("%d ", a->data);
-        //}
         printf("\n");
     }
 }
