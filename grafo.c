@@ -101,9 +101,13 @@ void buscaProfundidade(Graph G){
         pre[i] = -1;
     }
     for(int i = 0; i < G->V; i++){
-        if(pre[i] == -1)
+        printf("v :: %d ", i);
+        printf("pre[v] :: %d\n", pre[i]);
+        if(pre[i] == -1){
             buscaRecur(G, i, pre); // nova etapa
+        }
     }
+
 }
 
 void buscaRecur(Graph G, vertice v, int *pre){
