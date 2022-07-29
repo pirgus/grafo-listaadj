@@ -17,8 +17,10 @@ int main(){
         printf("grafo atual:: ");
         graphImprime(grafo);
 
-        //printf("excluindo aresta criada...\n");
-        //graphExcluirAresta(grafo, v1, v2);
+        printf("excluindo aresta criada...\n");
+        graphExcluirAresta(grafo, v1, v2);
+        printf("grafo depois da exclusao:: ");
+        graphImprime(grafo);
     }
 
     return 0;

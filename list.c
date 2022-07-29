@@ -184,30 +184,22 @@ void removeSpec(tdata x, list *L){
   node *p = L->first; // ponteiro para percorrer a lista
 
   // vai percorrer a lista procurando o elemento x
+  if(p != NULL && p->data == x){
+    L->first = p->next;
+    free(p);
+    return;
+  }
+
   while(p != NULL && p->data != x){
     ant = p;
     p = p->next;
   }
 
-  // verifica se o elemento existe na lista
   if(p == NULL){
-    printf("o elemento não existe na lista\n");
     return;
   }
 
-  // nao entrou no erro, entao retira o elemento
-  if(ant == NULL){
-    // retira o elemento do inicio
-    removeLeft(L);
-  }
-  else if(p->next == NULL){
-    // retira um elemento do final da lista
-    removeRight(L);
-  }
-  else{
-    // remove elemento do meio da lista
-    ant->next = p->next;
-  }
+  ant->next = p->next;
 
   free(p);
 }
