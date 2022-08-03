@@ -59,11 +59,13 @@ int main(){
                 printf("busca em largura\n");
                 printf("qual vertice? :: ");
                 scanf("%d", &v1);
-                buscaLargura(grafo, v1);
+                visitados = buscaLargura(grafo, v1);
+                printList(*visitados);
                 system("read -p 'Pressione Enter...' var");
             break;
 
             case 100:
+                graphDeleta(grafo);
                 printf("até mais!\n");
                 return 0;
         }

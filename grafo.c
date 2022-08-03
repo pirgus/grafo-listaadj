@@ -30,6 +30,11 @@ void graphInserirAresta(graph *G, vertice v, vertice w){
         printf("Erro: indicou um vertice maior que o tamanho do grafo\n");
         return;
     }
+    else if(v == w){
+        printf("Grafos não direcionados não podem possuir self-loop\n");
+        return;
+    }
+
     for(node *a = G->adj[v].first; a != NULL; a = a->next){
         //printf("percorrendo o grafo\n");
         if(a->data == w){
@@ -94,10 +99,10 @@ bool graphReach(graph *G, vertice s, vertice t){
 }
 
 list* buscaProfundidade(graph *G, vertice v){
-    list *stack, *visitados;
+    list *queue, *visitados;
     node *aux;
     
-    stack = initList(stack);
+    queue = initList(queue);
     visitados = initList(visitados);
     //printf("inicializou as listas\n");
 
@@ -108,39 +113,39 @@ list* buscaProfundidade(graph *G, vertice v){
 
     //printf("stack->last == %x\n", stack->last);
 
-    insertRight(v, stack);
+    insertRight(v, queue);
     //printf("inseriu na stack\n");
-    while(!emptyList(*stack)){
+    while(!emptyList(*queue)){
         //printf("entrou no while\n");
-        int visitado = removeRight(stack);
+        int visitado = removeLeft(queue);
         //printf("deu pop na stack\n");
         if(searchList(visitado, *visitados) == NULL)
             insertRight(visitado, visitados);
         //printf("inseriu na lista de visitados\n");
         for(node *a = G->adj[visitado].first; a != NULL; a = a->next){
-            if(/*(searchList(a->data, *stack) == NULL) &&*/ (searchList(a->data, *visitados) == NULL)){
+            if((searchList(a->data, *queue) == NULL) && (searchList(a->data, *visitados) == NULL)){
                 //printf("caminhando lista de adjacencia\n");
-                insertRight(a->data, stack);
+                insertRight(a->data, queue);
             }
         }
     }
 
-    deleteList(stack);
+    deleteList(queue);
     return visitados;
 }
 
 list* buscaLargura(graph *G, vertice v){
-    if(G->A < 1){
-        printf("Arestas insuficientes.\n");
-        return;
-    }
-
     list *stack, *visitados;
     node *aux;
-    
+
     stack = initList(stack);
     visitados = initList(visitados);
     //printf("inicializou as listas\n");
+    
+    if(G->A < 1){
+        printf("Arestas insuficientes.\n");
+        return visitados;
+    }
 
     if(G->A < 1){
         printf("Arestas insuficientes.\n");
@@ -182,5 +187,10 @@ void graphImprime(graph *G){
 }
 
 void graphDeleta(graph *G){
+    for(int i = 0; i < G->V; i++){
+        deleteList(&G->adj[i]);
+    }
+    free(G->adj);
+    free(G);
 
 }
