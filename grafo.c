@@ -2,8 +2,8 @@
 
 static int cnt;
 
-Graph graphInit(int V){
-    Graph G = (Graph) malloc(sizeof *G);
+graph* graphInit(int V){
+    graph *G = (graph*) malloc(sizeof(graph));
     G->V = V;
     G->A = 0;
     G->adj = (list*) malloc(sizeof(list) * V);
@@ -21,7 +21,7 @@ Graph graphInit(int V){
 //    
 //}
 
-void graphInserirAresta(Graph G, vertice v, vertice w){
+void graphInserirAresta(graph *G, vertice v, vertice w){
     if(v >= G->V){
         printf("Erro: indicou um vertice maior que o tamanho do grafo\n");
         return;
@@ -50,7 +50,7 @@ void graphInserirAresta(Graph G, vertice v, vertice w){
     G->A++;
 }
 
-void graphExcluirAresta(Graph G, vertice v, vertice w){
+void graphExcluirAresta(graph *G, vertice v, vertice w){
     if(v >= G->V){
         printf("Erro: indicou um vertice maior que o tamanho do grafo\n");
         return;
@@ -66,7 +66,7 @@ void graphExcluirAresta(Graph G, vertice v, vertice w){
     G->A--;
 }
 
-void reachR(Graph G, vertice v, int *visited){
+void reachR(graph *G, vertice v, int *visited){
     visited = (int*) malloc(sizeof(int) * G->V);
     visited[v] = 1;
     for(node *a = G->adj[v].first; a != NULL; a = a->next){
@@ -76,7 +76,7 @@ void reachR(Graph G, vertice v, int *visited){
     }
 }
 
-bool graphReach(Graph G, vertice s, vertice t){
+bool graphReach(graph *G, vertice s, vertice t){
     int *visited;
     visited = (int*) malloc(sizeof(int) * G->V);
     for(int i = 0; i < G->V; i++){
@@ -93,88 +93,85 @@ bool graphReach(Graph G, vertice s, vertice t){
     }
 }
 
-void buscaProfundidade(Graph G){
-    if(G->A < 1){
-        printf("Arestas insuficientes.\n");
-        return;
-    }
+list* buscaProfundidade(graph *G, vertice v){
+    list *stack, *visitados;
+    node *aux;
     
-    cnt = 0;
-    int *pre;
-    pre = (int*) malloc(sizeof(int) * G->V);
-    for(int i = 0; i < G->V; i++){
-        pre[i] = -1;
-    }
-    for(int i = 0; i < G->V; i++){
-        printf("v :: %d ", i);
-        printf("pre[v] :: %d\n", pre[i]);
-        if(pre[i] == -1){
-            buscaRecur(G, i, pre); // nova etapa
-        }
-    }
+    stack = initList(stack);
+    visitados = initList(visitados);
+    //printf("inicializou as listas\n");
 
-}
-
-static void buscaRecur(Graph G, vertice v, int *pre){
-    pre[v] = cnt++;
-    for(node *a = G->adj[v].first; a != NULL; a = a->next){
-        int w = a->data;
-        if(pre[w] == -1){
-            buscaRecur(G, w, pre);
-        }
-    }
-}
-
-void buscaLargura(Graph G, vertice s){
     if(G->A < 1){
         printf("Arestas insuficientes.\n");
-        return;
+        return visitados;
     }
 
-    static int *num;
-    list *queue;
-    int cnt = 0;
+    //printf("stack->last == %x\n", stack->last);
 
-    num = (int*) malloc(sizeof(int) * G->V);
-
-    for(int i = 0; i < G->V; i++){
-        num[i] = -1;
-    }
-    printf("inicializou o vetor num[] com -1s\n");
-
-    initList(queue);
-    printf("inicializou a lista auxiliar\n");
-
-    num[s] = cnt++;
-    printf("atribuiu c++ a num[s])\n");
-
-    insertRight(s, queue);
-    printf("inseriu s na lista\n");
-
-    while(!emptyList(*queue)){
-        // imprime a lista 
-        printList(*queue);
-
-        // imprime o vetor num[]
-        printf("num[] = ");
-        for(int i = 0; i < G->V; i++){
-            printf("%d ", num[i]);
-        }
-        printf("\n");
-
-        vertice v = removeLeft(queue);
-        for(node *a = G->adj[v].first; a != NULL; a = a->next){
-            if(num[a->data] == -1){
-                num[a->data] = cnt++;
-                insertRight(a->data, queue);
+    insertRight(v, stack);
+    //printf("inseriu na stack\n");
+    while(!emptyList(*stack)){
+        //printf("entrou no while\n");
+        int visitado = removeRight(stack);
+        //printf("deu pop na stack\n");
+        if(searchList(visitado, *visitados) == NULL)
+            insertRight(visitado, visitados);
+        //printf("inseriu na lista de visitados\n");
+        for(node *a = G->adj[visitado].first; a != NULL; a = a->next){
+            if(/*(searchList(a->data, *stack) == NULL) &&*/ (searchList(a->data, *visitados) == NULL)){
+                //printf("caminhando lista de adjacencia\n");
+                insertRight(a->data, stack);
             }
         }
     }
-    free(num);
-    deleteList(queue);
+
+    deleteList(stack);
+    return visitados;
 }
 
-void graphImprime(Graph G){
+list* buscaLargura(graph *G, vertice v){
+    if(G->A < 1){
+        printf("Arestas insuficientes.\n");
+        return;
+    }
+
+    list *stack, *visitados;
+    node *aux;
+    
+    stack = initList(stack);
+    visitados = initList(visitados);
+    //printf("inicializou as listas\n");
+
+    if(G->A < 1){
+        printf("Arestas insuficientes.\n");
+        return visitados;
+    }
+
+    //printf("stack->last == %x\n", stack->last);
+
+    insertRight(v, stack);
+    //printf("inseriu na stack\n");
+    while(!emptyList(*stack)){
+        //printf("entrou no while\n");
+        int visitado = removeRight(stack);
+        //printf("deu pop na stack\n");
+        if(searchList(visitado, *visitados) == NULL)
+            insertRight(visitado, visitados);
+        //printf("inseriu na lista de visitados\n");
+        for(node *a = G->adj[visitado].first; a != NULL; a = a->next){
+            if(/*(searchList(a->data, *stack) == NULL) &&*/ (searchList(a->data, *visitados) == NULL)){
+                //printf("caminhando lista de adjacencia\n");
+                insertRight(a->data, stack);
+            }
+        }
+    }
+
+    deleteList(stack);
+    return visitados;
+
+}
+
+void graphImprime(graph *G){
     printf("G->V = %d\n", G->V);
     printf("G->A = %d\n", G->A);
     for(int i = 0; i < G->V; i++){
@@ -184,6 +181,6 @@ void graphImprime(Graph G){
     }
 }
 
-void graphDeleta(Graph G){
+void graphDeleta(graph *G){
 
 }

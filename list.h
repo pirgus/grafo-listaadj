@@ -15,7 +15,7 @@ typedef struct list{
     node *last;
 } list;
 
-void initList(list *L);
+list* initList(list *L);
 
 void deleteList(list *L);
 

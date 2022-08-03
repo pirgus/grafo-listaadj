@@ -1,7 +1,8 @@
 #include "grafo.h"
 
 int main(){
-    Graph grafo;
+    graph *grafo;
+    list *visitados;
     int vertices, v1, v2;
     int opc;
     char enter;
@@ -10,6 +11,7 @@ int main(){
     scanf("%d", &vertices);
     printf("\n");
     grafo = graphInit(vertices);
+    system("read -p 'Pressione Enter...' var");
 
     while(true){
         system("clear");
@@ -48,7 +50,8 @@ int main(){
 
             case 4:
                 printf("busca em profundidade\n");
-                buscaProfundidade(grafo);
+                visitados = buscaProfundidade(grafo, 0);
+                printList(*visitados);
                 system("read -p 'Pressione Enter...' var");
             break;
 

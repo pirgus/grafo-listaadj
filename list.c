@@ -1,12 +1,15 @@
 #include "list.h"
 
-void initList(list *L){
+list* initList(list *L){
   // inicializa todos os aspectos da lista como NULL ou 0
   L = (list*) malloc(sizeof(list));
 
   L->first = NULL;
   L->last = NULL;
+  //printf("no initList -> L->last == %x\n", L->last);
   L->size = 0;
+
+  return L;
 }
 
 void deleteList(list *L){
@@ -52,14 +55,18 @@ void insertLeft(tdata x, list *L){
 
 void insertRight(tdata x, list *L){
   node *aux = (node*) malloc(sizeof(node));
-
+  //printf("começou inserção\n");
   if(aux == NULL) // nao conseguiu alocar aux
     return; // retorna com erro
   else{
+    //printf("entrou no else\n");
     aux->data = x;
+    //printf("atribuiu x\n");
     aux->next = NULL; // pois é o ultimo elemento da lista
+    //printf("atribuiu NULL\n");
+    //printf("L->last == %x\n", L->last);
     if(L->last == NULL){ // a lista está vazia
-      printf("chegou na lista vazia\n");
+      //printf("chegou na lista vazia\n");
       L->first = L->last = aux;
     }
     else{

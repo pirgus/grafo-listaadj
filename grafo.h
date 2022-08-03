@@ -6,34 +6,32 @@
 
 #define vertice int
 
-struct graph{
+typedef struct graph{
     int V;
     int A;
     list *adj;
-};
+} graph;
 
-typedef struct  graph *Graph;
+//typedef struct  graph *Graph;
 
-Graph graphInit(int V);
+graph* graphInit(int V);
 
 //void graphInserirVertice(Graph G, vertice v);
 
 //void graphExluirVertice(Graph G, vertice v);
 
-void graphInserirAresta(Graph G, vertice v, vertice w);
+void graphInserirAresta(graph *G, vertice v, vertice w);
 
-void graphExcluirAresta(Graph G, vertice v, vertice w);
+void graphExcluirAresta(graph *G, vertice v, vertice w);
 
-void reachR(Graph G, vertice v, int *visited);
+void reachR(graph *G, vertice v, int *visited);
 
-bool graphReach(Graph G, vertice s, vertice t);
+bool graphReach(graph *G, vertice s, vertice t);
 
-void buscaProfundidade(Graph G);
+list* buscaProfundidade(graph *G, vertice v);
 
-static void buscaRecur(Graph G, vertice v, int *pre);
+list* buscaLargura(graph *G, vertice s);
 
-void buscaLargura(Graph G, vertice s);
+void graphImprime(graph *G);
 
-void graphImprime(Graph G);
-
-void graphDeleta(Graph G);
+void graphDeleta(graph *G);
