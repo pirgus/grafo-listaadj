@@ -98,7 +98,7 @@ bool graphReach(graph *G, vertice s, vertice t){
     }
 }
 
-list* buscaProfundidade(graph *G, vertice v){
+list* buscaLargura(graph *G, vertice v){
     list *queue, *visitados;
     node *aux;
     
@@ -134,7 +134,7 @@ list* buscaProfundidade(graph *G, vertice v){
     return visitados;
 }
 
-list* buscaLargura(graph *G, vertice v){
+list* buscaProfundidade(graph *G, vertice v){
     list *stack, *visitados;
     node *aux;
 
