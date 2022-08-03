@@ -19,7 +19,7 @@ int main(){
         printf("1) Inserir aresta\n");
         printf("2) Excluir aresta\n");
         printf("3) Imprimir grafo\n");
-        printf("4) Busca em prfundidade\n");
+        printf("4) Busca em profundidade\n");
         printf("5) Busca em largura\n");
         printf("100) Sair\n");
 
